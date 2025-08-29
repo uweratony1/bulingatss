@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Home = () => {
-  // ✅ RENAME FILES: tony 1.jpg → tony1.jpg (NO SPACES)
+  // ✅ Rename files: tony 1.jpg → tony1.jpg (NO SPACES!)
   const backgrounds = [
     '/assets/images/tony3.jpg',
     '/assets/images/tony1.jpg',  // Must be renamed!
@@ -12,13 +12,19 @@ const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imageErrors, setImageErrors] = useState({});
 
-  // Preload images and handle errors
+  // Preload images and log errors
   useEffect(() => {
+    console.log('👉 Loading background images...');
     backgrounds.forEach((src, idx) => {
       const img = new Image();
       img.src = src;
-      img.onload = () => console.log('✅ Loaded:', src);
-      img.onerror = () => setImageErrors(prev => ({ ...prev, [idx]: true }));
+      img.onload = () => {
+        console.log(`✅ Loaded: ${src}`);
+      };
+      img.onerror = () => {
+        console.error(`❌ Failed to load: ${src}`);
+        setImageErrors(prev => ({ ...prev, [idx]: true }));
+      };
     });
   }, []);
 
@@ -67,17 +73,17 @@ const Home = () => {
       {/* === 2. Why Choose Us === */}
       <section style={styles.section} id="programs">
         <h2 style={styles.sectionTitle}>Why Choose Bulinga TSS?</h2>
-        <div style={styles.grid}>
+        <div style={styles.featuresGrid}>
           {[
             { icon: "🛠️", title: "Hands-On Learning", desc: "We emphasize practical training in real labs with modern tools." },
             { icon: "🎓", title: "Certified Instructors", desc: "Our teachers are experienced professionals with industry expertise." },
             { icon: "💼", title: "Career Support", desc: "We help graduates find jobs and internships with partner companies." },
             { icon: "🏫", title: "Modern Campus", desc: "Spacious classrooms, computer labs, and safe learning environment." }
-          ].map((item, idx) => (
-            <div key={idx} style={styles.card}>
-              <span style={styles.icon}>{item.icon}</span>
-              <h3 style={styles.cardTitle}>{item.title}</h3>
-              <p style={styles.cardDesc}>{item.desc}</p>
+          ].map((feature, idx) => (
+            <div key={idx} style={styles.featureCard}>
+              <span style={styles.featureIcon}>{feature.icon}</span>
+              <h3 style={styles.featureTitle}>{feature.title}</h3>
+              <p style={styles.featureDesc}>{feature.desc}</p>
             </div>
           ))}
         </div>
@@ -86,7 +92,7 @@ const Home = () => {
       {/* === 3. Programs Offered === */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Our Academic Programs</h2>
-        <div style={styles.grid}>
+        <div style={styles.programsGrid}>
           {[
             "Network & Internet Technology",
             "Software Development",
@@ -108,7 +114,7 @@ const Home = () => {
 
       {/* === 4. Achievements === */}
       <section style={styles.statsSection}>
-        <div style={styles.statsGrid}>
+        <div style={styles.statsContainer}>
           {[
             { number: "850+", label: "Students Trained" },
             { number: "92%", label: "Graduation Rate" },
@@ -126,7 +132,7 @@ const Home = () => {
       {/* === 5. News & Events === */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Latest News & Events</h2>
-        <div style={styles.grid}>
+        <div style={styles.newsGrid}>
           {[
             {
               title: "New Computer Lab Opens",
@@ -156,22 +162,17 @@ const Home = () => {
       {/* === 6. Testimonials === */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>What Our Students Say</h2>
-        <div style={styles.grid}>
+        <div style={styles.testimonialsGrid}>
           {[
             {
               name: "Jean P.",
-              program: "Software Development",
-              quote: "I built my first app in just 3 months. Now I work at a tech startup in Kigali."
+ program: "Software Development", quote: "I built my first app in just 3 months. Now I work at a tech startup in Kigali."
             },
             {
-              name: "Aline M.",
-              program: "Accounting",
-              quote: "The teachers are patient and supportive. I passed my national exams with distinction."
+              name: "Aline M.", program: "Accounting", quote: "The teachers are patient and supportive. I passed my national exams with distinction."
             },
             {
-              name: "Thomas K.",
-              program: "Network Technology",
-              quote: "The labs are amazing. I got certified in CCNA and now manage a school network."
+              name: "Thomas K.", program: "Network Technology", quote: "The labs are amazing. I got certified in CCNA and now manage a school network."
             }
           ].map((testimonial, idx) => (
             <div key={idx} style={styles.testimonialCard}>
@@ -217,7 +218,6 @@ const styles = {
     width: '100%',
     height: '90vh',
     minHeight: '400px',
-    maxHeight: '900px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -300,65 +300,62 @@ const styles = {
     textAlign: 'center'
   },
 
-  // Universal Grid (mobile-first)
-  grid: {
+  // Features Grid
+  featuresGrid: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
     gap: '1.5rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
-  '@media (min-width: 768px)': {
-    grid: {
-      ...styles.grid,
-      gridTemplateColumns: 'repeat(2, 1fr)'
-    }
-  },
-  '@media (min-width: 1024px)': {
-    grid: {
-      ...styles.grid,
-      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))'
-    }
-  },
-
-  // Card Styles
-  card: {
+  featureCard: {
     padding: '1.6rem',
     borderRadius: '12px',
     backgroundColor: '#f8f9ff',
+    textAlign: 'center',
     border: '1px solid #e0f0ff',
     boxShadow: '0 4px 10px rgba(30, 144, 255, 0.08)',
-    textAlign: 'center',
-    wordBreak: 'break-word',
-    overflowWrap: 'break-word'
+    wordBreak: 'break-word'
   },
-  icon: {
+  featureIcon: {
     fontSize: '2.3rem',
     marginBottom: '0.6rem',
     display: 'block'
   },
-  cardTitle: {
+  featureTitle: {
     fontSize: '1.3rem',
     color: '#000',
     marginBottom: '0.6rem'
   },
-  cardDesc: {
+  featureDesc: {
     color: '#444',
     lineHeight: '1.6',
     fontSize: '0.95rem'
   },
 
-  // Program Card
+  // Programs Grid
+  programsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '1.5rem',
+    maxWidth: '1200px',
+    margin: '0 auto'
+  },
   programCard: {
-    ...styles.card,
-    backgroundColor: '#f8f9ff'
+    padding: '1.6rem',
+    borderRadius: '10px',
+    backgroundColor: '#f8f9ff',
+    border: '1px solid #cce5ff',
+    wordBreak: 'break-word'
   },
   programTitle: {
-    ...styles.cardTitle,
-    fontSize: '1.3rem'
+    fontSize: '1.3rem',
+    color: '#000',
+    marginBottom: '0.6rem'
   },
   programDesc: {
-    ...styles.cardDesc,
+    color: '#444',
+    lineHeight: '1.6',
     fontSize: '0.95rem'
   },
 
@@ -369,22 +366,12 @@ const styles = {
     color: 'white',
     textAlign: 'center'
   },
-  statsGrid: {
+  statsContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
     gap: '1.2rem',
     maxWidth: '1000px',
     margin: '0 auto'
-  },
-  '@media (min-width: 768px)': {
-    statsGrid: {
-      gridTemplateColumns: 'repeat(2, 1fr)'
-    }
-  },
-  '@media (min-width: 1024px)': {
-    statsGrid: {
-      gridTemplateColumns: 'repeat(4, 1fr)'
-    }
   },
   statCard: {
     padding: '1.4rem'
@@ -401,11 +388,20 @@ const styles = {
     fontSize: '0.9rem'
   },
 
-  // News Card
+  // News Grid
+  newsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    gap: '1.5rem',
+    maxWidth: '1200px',
+    margin: '0 auto'
+  },
   newsCard: {
-    ...styles.card,
+    padding: '1.5rem',
+    borderRadius: '10px',
+    border: '1px solid #cce5ff',
     backgroundColor: '#f0f8ff',
-    border: '1px solid #cce5ff'
+    wordBreak: 'break-word'
   },
   newsDate: {
     fontSize: '0.9rem',
@@ -425,12 +421,21 @@ const styles = {
     fontSize: '0.95rem'
   },
 
-  // Testimonial Card
+  // Testimonials Grid
+  testimonialsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    gap: '1.5rem',
+    maxWidth: '1200px',
+    margin: '0 auto'
+  },
   testimonialCard: {
-    ...styles.card,
+    padding: '1.5rem',
+    borderRadius: '10px',
     backgroundColor: 'white',
+    border: '1px solid #cce5ff',
     fontStyle: 'italic',
-    border: '1px solid #cce5ff'
+    wordBreak: 'break-word'
   },
   testimonialQuote: {
     color: '#333',
