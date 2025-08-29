@@ -2,14 +2,28 @@
 import React, { useState, useEffect } from 'react';
 
 const Home = () => {
-  // ✅ Use local images from public/assets/images/
+  // ✅ Corrected image paths (NO spaces in filenames)
   const backgrounds = [
-    '/assets/images/tony3.jpg',   // Path: public/assets/images/tony3.jpg
-    '/assets/images/tony 1.jpg',   // Path: public/assets/images/tony 1.jpg
-    '/assets/images/tony4.jpg'    // Path: public/assets/images/tony4.jpg
+    '/assets/images/tony3.jpg',
+    '/assets/images/tony1.jpg',  // Rename from "tony 1.jpg" → "tony1.jpg"
+    '/assets/images/tony4.jpg'
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [imageErrors, setImageErrors] = useState({});
+
+  // Preload and check images
+  useEffect(() => {
+    backgrounds.forEach((src, idx) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => console.log(`✅ Loaded: ${src}`);
+      img.onerror = () => {
+        console.error(`❌ Failed to load: ${src}`);
+        setImageErrors(prev => ({ ...prev, [idx]: true }));
+      };
+    });
+  }, []);
 
   // Auto-slide every 5 seconds
   useEffect(() => {
@@ -28,7 +42,12 @@ const Home = () => {
             key={idx}
             style={{
               ...styles.slide,
-              backgroundImage: `url("${img}")`,
+              backgroundImage: imageErrors[idx]
+                ? 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(https://via.placeholder.com/1920x1080/000/fff?text=Image+Not+Found)'
+                : `url("${img}")`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
               opacity: idx === currentSlide ? 1 : 0
             }}
           />
@@ -221,7 +240,8 @@ const styles = {
     position: 'relative',
     width: '100%',
     height: '90vh',
-    minHeight: '500px',
+    minHeight: '400px',
+    maxHeight: '900px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -235,121 +255,125 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor: '#000', // Fallback if image fails
+    backgroundColor: '#000',
     transition: 'opacity 1.2s ease-in-out',
     zIndex: -1
   },
   heroContent: {
     zIndex: 1,
-    maxWidth: '900px',
-    padding: '0 20px'
+    maxWidth: '90vw',
+    padding: '0 20px',
+    textAlign: 'center'
   },
   heroTitle: {
-    fontSize: 'clamp(2.2rem, 8vw, 3.8rem)',
+    fontSize: 'clamp(1.8rem, 8vw, 3.5rem)',
     marginBottom: '1rem',
     textShadow: '0 2px 10px rgba(0,0,0,0.8)',
     fontWeight: 'bold'
   },
   heroText: {
-    fontSize: 'clamp(1.1rem, 4vw, 1.4rem)',
-    marginBottom: '2rem',
-    maxWidth: '700px',
-    margin: '0 auto 2rem',
+    fontSize: 'clamp(1rem, 4vw, 1.4rem)',
+    marginBottom: '1.5rem',
+    maxWidth: '600px',
+    margin: '0 auto 1.5rem',
     textShadow: '0 1px 5px rgba(0,0,0,0.7)'
   },
   heroButtons: {
     display: 'flex',
+    flexDirection: 'column',
     gap: '1rem',
     justifyContent: 'center',
+    alignItems: 'center',
     flexWrap: 'wrap'
   },
   primaryButton: {
     padding: '14px 32px',
     fontSize: '1.1rem',
-    background: '#1E90FF',  // Sky Blue
+    background: '#1E90FF',
     color: 'white',
     border: 'none',
     borderRadius: '6px',
     fontWeight: 'bold',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    width: '100%',
+    maxWidth: '200px'
   },
   secondaryButton: {
-    padding: '14px 32px',
+    padding: '12px 30px',
     fontSize: '1.1rem',
     background: 'transparent',
     color: '#1E90FF',
     border: '2px solid #1E90FF',
     borderRadius: '6px',
     cursor: 'pointer',
-    fontWeight: '500'
+    fontWeight: '500',
+    width: '100%',
+    maxWidth: '200px'
   },
 
   // General Section
   section: {
-    padding: '5rem 2rem',
+    padding: '4rem 2rem',
     backgroundColor: 'white'
   },
   sectionTitle: {
-    fontSize: 'clamp(1.8rem, 6vw, 2.6rem)',
+    fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
     color: '#000',
-    marginBottom: '2.5rem',
+    marginBottom: '2rem',
     textAlign: 'center'
   },
 
   // Features Grid
   featuresGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-    gap: '2rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '1.5rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
   featureCard: {
-    padding: '2rem',
+    padding: '1.8rem',
     borderRadius: '12px',
     backgroundColor: '#f8f9ff',
     textAlign: 'center',
     border: '1px solid #e0f0ff',
-    boxShadow: '0 4px 12px rgba(30, 144, 255, 0.08)',
+    boxShadow: '0 4px 10px rgba(30, 144, 255, 0.08)',
     transition: 'transform 0.3s ease'
   },
   featureIcon: {
-    fontSize: '2.5rem',
-    marginBottom: '0.8rem',
+    fontSize: '2.3rem',
+    marginBottom: '0.6rem',
     display: 'block'
   },
   featureTitle: {
-    fontSize: '1.5rem',
+    fontSize: '1.4rem',
     color: '#000',
-    marginBottom: '0.8rem'
+    marginBottom: '0.6rem'
   },
   featureDesc: {
     color: '#444',
-    lineHeight: '1.7'
+    lineHeight: '1.6'
   },
 
   // Programs Section
   programsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: '2rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    gap: '1.8rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
   programCard: {
-    padding: '2rem',
+    padding: '1.8rem',
     borderRadius: '10px',
     backgroundColor: '#f8f9ff',
     border: '1px solid #cce5ff',
     transition: 'all 0.3s ease'
   },
   programTitle: {
-    fontSize: '1.4rem',
+    fontSize: '1.3rem',
     color: '#000',
-    marginBottom: '0.8rem'
+    marginBottom: '0.6rem'
   },
   programDesc: {
     color: '#444',
@@ -358,42 +382,42 @@ const styles = {
 
   // Stats Section (Sky Blue)
   statsSection: {
-    padding: '5rem 2rem',
+    padding: '4rem 2rem',
     backgroundColor: '#1E90FF',
     color: 'white',
     textAlign: 'center'
   },
   statsContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '2rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+    gap: '1.5rem',
     maxWidth: '1000px',
     margin: '0 auto'
   },
   statCard: {
-    padding: '1.8rem'
+    padding: '1.5rem'
   },
   statNumber: {
-    fontSize: '2.8rem',
+    fontSize: '2.4rem',
     fontWeight: 'bold',
     color: 'white'
   },
   statLabel: {
     color: 'rgba(255,255,255,0.95)',
-    marginTop: '0.5rem',
+    marginTop: '0.4rem',
     fontWeight: '500'
   },
 
   // News & Events
   newsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '2rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '1.8rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
   newsCard: {
-    padding: '1.8rem',
+    padding: '1.6rem',
     borderRadius: '10px',
     border: '1px solid #cce5ff',
     backgroundColor: '#f0f8ff',
@@ -407,9 +431,9 @@ const styles = {
     marginBottom: '0.5rem'
   },
   newsTitle: {
-    fontSize: '1.4rem',
+    fontSize: '1.3rem',
     color: '#000',
-    marginBottom: '0.8rem'
+    marginBottom: '0.6rem'
   },
   newsDesc: {
     color: '#444',
@@ -419,18 +443,18 @@ const styles = {
   // Testimonials
   testimonialsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '2rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '1.8rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
   testimonialCard: {
-    padding: '1.8rem',
+    padding: '1.6rem',
     borderRadius: '10px',
     backgroundColor: 'white',
     border: '1px solid #cce5ff',
     fontStyle: 'italic',
-    boxShadow: '0 4px 10px rgba(30, 144, 255, 0.08)'
+    boxShadow: '0 4px 8px rgba(30, 144, 255, 0.08)'
   },
   testimonialQuote: {
     color: '#333',
@@ -449,7 +473,7 @@ const styles = {
 
   // Final CTA
   ctaSection: {
-    padding: '6rem 2rem',
+    padding: '5rem 2rem',
     backgroundColor: '#f8f9ff',
     textAlign: 'center'
   },
@@ -458,18 +482,18 @@ const styles = {
     margin: '0 auto'
   },
   ctaTitle: {
-    fontSize: '2.2rem',
+    fontSize: 'clamp(1.8rem, 6vw, 2.4rem)',
     color: '#000',
     marginBottom: '1rem'
   },
   ctaText: {
-    fontSize: '1.2rem',
+    fontSize: '1.1rem',
     color: '#555',
-    marginBottom: '2rem'
+    marginBottom: '1.8rem'
   },
   ctaButton: {
-    padding: '16px 40px',
-    fontSize: '1.2rem',
+    padding: '14px 36px',
+    fontSize: '1.15rem',
     background: '#1E90FF',
     color: 'white',
     border: 'none',
