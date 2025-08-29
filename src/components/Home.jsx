@@ -2,30 +2,27 @@
 import React, { useState, useEffect } from 'react';
 
 const Home = () => {
-  // ✅ Corrected image paths (NO spaces in filenames)
+  // ✅ Fix: Rename "tony 1.jpg" → "tony1.jpg" (no spaces)
   const backgrounds = [
     '/assets/images/tony3.jpg',
-    '/assets/images/tony1.jpg',  // Rename from "tony 1.jpg" → "tony1.jpg"
+    '/assets/images/tony1.jpg', // Must be renamed!
     '/assets/images/tony4.jpg'
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imageErrors, setImageErrors] = useState({});
 
-  // Preload and check images
+  // Preload images
   useEffect(() => {
     backgrounds.forEach((src, idx) => {
       const img = new Image();
       img.src = src;
-      img.onload = () => console.log(`✅ Loaded: ${src}`);
-      img.onerror = () => {
-        console.error(`❌ Failed to load: ${src}`);
-        setImageErrors(prev => ({ ...prev, [idx]: true }));
-      };
+      img.onload = () => console.log('✅ Loaded:', src);
+      img.onerror = () => setImageErrors(prev => ({ ...prev, [idx]: true }));
     });
   }, []);
 
-  // Auto-slide every 5 seconds
+  // Auto-slide
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % backgrounds.length);
@@ -35,7 +32,7 @@ const Home = () => {
 
   return (
     <div style={styles.container}>
-      {/* === 1. Hero Section with Sliding Background === */}
+      {/* === 1. Hero Section === */}
       <section style={styles.hero}>
         {backgrounds.map((img, idx) => (
           <div
@@ -44,16 +41,10 @@ const Home = () => {
               ...styles.slide,
               backgroundImage: imageErrors[idx]
                 ? 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(https://via.placeholder.com/1920x1080/000/fff?text=Image+Not+Found)'
-                : `url("${img}")`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-              opacity: idx === currentSlide ? 1 : 0
+                : `url("${img}")`
             }}
           />
         ))}
-
-        {/* Hero Content */}
         <div style={styles.heroContent}>
           <h1 style={styles.heroTitle}>Welcome to Bulinga TSS</h1>
           <p style={styles.heroText}>
@@ -78,26 +69,10 @@ const Home = () => {
         <h2 style={styles.sectionTitle}>Why Choose Bulinga TSS?</h2>
         <div style={styles.featuresGrid}>
           {[
-            {
-              icon: "🛠️",
-              title: "Hands-On Learning",
-              desc: "We emphasize practical training in real labs with modern tools."
-            },
-            {
-              icon: "🎓",
-              title: "Certified Instructors",
-              desc: "Our teachers are experienced professionals with industry expertise."
-            },
-            {
-              icon: "💼",
-              title: "Career Support",
-              desc: "We help graduates find jobs and internships with partner companies."
-            },
-            {
-              icon: "🏫",
-              title: "Modern Campus",
-              desc: "Spacious classrooms, computer labs, and safe learning environment."
-            }
+            { icon: "🛠️", title: "Hands-On Learning", desc: "We emphasize practical training in real labs with modern tools." },
+            { icon: "🎓", title: "Certified Instructors", desc: "Our teachers are experienced professionals with industry expertise." },
+            { icon: "💼", title: "Career Support", desc: "We help graduates find jobs and internships with partner companies." },
+            { icon: "🏫", title: "Modern Campus", desc: "Spacious classrooms, computer labs, and safe learning environment." }
           ].map((feature, idx) => (
             <div key={idx} style={styles.featureCard}>
               <span style={styles.featureIcon}>{feature.icon}</span>
@@ -232,7 +207,8 @@ export default Home;
 const styles = {
   container: {
     width: '100%',
-    overflowX: 'hidden'
+    overflowX: 'hidden',
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
   },
 
   // Hero Section
@@ -255,6 +231,9 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
     backgroundColor: '#000',
     transition: 'opacity 1.2s ease-in-out',
     zIndex: -1
@@ -262,20 +241,20 @@ const styles = {
   heroContent: {
     zIndex: 1,
     maxWidth: '90vw',
-    padding: '0 20px',
+    padding: '0 1rem',
     textAlign: 'center'
   },
   heroTitle: {
-    fontSize: 'clamp(1.8rem, 8vw, 3.5rem)',
-    marginBottom: '1rem',
+    fontSize: 'clamp(1.6rem, 8vw, 3.2rem)',
+    marginBottom: '0.8rem',
     textShadow: '0 2px 10px rgba(0,0,0,0.8)',
     fontWeight: 'bold'
   },
   heroText: {
-    fontSize: 'clamp(1rem, 4vw, 1.4rem)',
+    fontSize: 'clamp(1rem, 4vw, 1.3rem)',
     marginBottom: '1.5rem',
     maxWidth: '600px',
-    margin: '0 auto 1.5rem',
+    margin: '0 auto',
     textShadow: '0 1px 5px rgba(0,0,0,0.7)'
   },
   heroButtons: {
@@ -283,8 +262,7 @@ const styles = {
     flexDirection: 'column',
     gap: '1rem',
     justifyContent: 'center',
-    alignItems: 'center',
-    flexWrap: 'wrap'
+    alignItems: 'center'
   },
   primaryButton: {
     padding: '14px 32px',
@@ -313,13 +291,13 @@ const styles = {
 
   // General Section
   section: {
-    padding: '4rem 2rem',
+    padding: '3rem 1.5rem',
     backgroundColor: 'white'
   },
   sectionTitle: {
-    fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
+    fontSize: 'clamp(1.5rem, 6vw, 2.4rem)',
     color: '#000',
-    marginBottom: '2rem',
+    marginBottom: '1.8rem',
     textAlign: 'center'
   },
 
@@ -332,7 +310,7 @@ const styles = {
     margin: '0 auto'
   },
   featureCard: {
-    padding: '1.8rem',
+    padding: '1.6rem',
     borderRadius: '12px',
     backgroundColor: '#f8f9ff',
     textAlign: 'center',
@@ -346,7 +324,7 @@ const styles = {
     display: 'block'
   },
   featureTitle: {
-    fontSize: '1.4rem',
+    fontSize: '1.3rem',
     color: '#000',
     marginBottom: '0.6rem'
   },
@@ -355,16 +333,16 @@ const styles = {
     lineHeight: '1.6'
   },
 
-  // Programs Section
+  // Programs Grid
   programsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-    gap: '1.8rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '1.5rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
   programCard: {
-    padding: '1.8rem',
+    padding: '1.6rem',
     borderRadius: '10px',
     backgroundColor: '#f8f9ff',
     border: '1px solid #cce5ff',
@@ -380,25 +358,25 @@ const styles = {
     lineHeight: '1.6'
   },
 
-  // Stats Section (Sky Blue)
+  // Stats Section
   statsSection: {
-    padding: '4rem 2rem',
+    padding: '3.5rem 1.5rem',
     backgroundColor: '#1E90FF',
     color: 'white',
     textAlign: 'center'
   },
   statsContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-    gap: '1.5rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+    gap: '1.2rem',
     maxWidth: '1000px',
     margin: '0 auto'
   },
   statCard: {
-    padding: '1.5rem'
+    padding: '1.4rem'
   },
   statNumber: {
-    fontSize: '2.4rem',
+    fontSize: '2.2rem',
     fontWeight: 'bold',
     color: 'white'
   },
@@ -408,16 +386,16 @@ const styles = {
     fontWeight: '500'
   },
 
-  // News & Events
+  // News Grid
   newsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: '1.8rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    gap: '1.5rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
   newsCard: {
-    padding: '1.6rem',
+    padding: '1.5rem',
     borderRadius: '10px',
     border: '1px solid #cce5ff',
     backgroundColor: '#f0f8ff',
@@ -440,16 +418,16 @@ const styles = {
     lineHeight: '1.6'
   },
 
-  // Testimonials
+  // Testimonials Grid
   testimonialsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: '1.8rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    gap: '1.5rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
   testimonialCard: {
-    padding: '1.6rem',
+    padding: '1.5rem',
     borderRadius: '10px',
     backgroundColor: 'white',
     border: '1px solid #cce5ff',
@@ -471,25 +449,25 @@ const styles = {
     fontWeight: '500'
   },
 
-  // Final CTA
+  // CTA Section
   ctaSection: {
-    padding: '5rem 2rem',
+    padding: '4rem 1.5rem',
     backgroundColor: '#f8f9ff',
     textAlign: 'center'
   },
   ctaContent: {
-    maxWidth: '700px',
+    maxWidth: '650px',
     margin: '0 auto'
   },
   ctaTitle: {
-    fontSize: 'clamp(1.8rem, 6vw, 2.4rem)',
+    fontSize: 'clamp(1.6rem, 6vw, 2.2rem)',
     color: '#000',
     marginBottom: '1rem'
   },
   ctaText: {
     fontSize: '1.1rem',
     color: '#555',
-    marginBottom: '1.8rem'
+    marginBottom: '1.5rem'
   },
   ctaButton: {
     padding: '14px 36px',
