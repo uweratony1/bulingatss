@@ -2,17 +2,17 @@
 import React, { useState, useEffect } from 'react';
 
 const Home = () => {
-  // ✅ Ensure filenames have NO spaces: tony1.jpg, not "tony 1.jpg"
+  // ✅ RENAME FILES: tony 1.jpg → tony1.jpg (NO SPACES)
   const backgrounds = [
     '/assets/images/tony3.jpg',
-    '/assets/images/tony1.jpg',
+    '/assets/images/tony1.jpg',  // Must be renamed!
     '/assets/images/tony4.jpg'
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imageErrors, setImageErrors] = useState({});
 
-  // Preload images
+  // Preload images and handle errors
   useEffect(() => {
     backgrounds.forEach((src, idx) => {
       const img = new Image();
@@ -22,7 +22,7 @@ const Home = () => {
     });
   }, []);
 
-  // Auto-slide
+  // Auto-slide every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % backgrounds.length);
@@ -208,16 +208,16 @@ const styles = {
   container: {
     width: '100%',
     overflowX: 'hidden',
-    fontFamily: "'Segoe UI', sans-serif",
-    boxSizing: 'border-box'
+    fontFamily: "'Segoe UI', sans-serif"
   },
 
-  // Hero
+  // Hero Section
   hero: {
     position: 'relative',
     width: '100%',
     height: '90vh',
     minHeight: '400px',
+    maxHeight: '900px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -244,7 +244,7 @@ const styles = {
     textAlign: 'center'
   },
   heroTitle: {
-    fontSize: 'clamp(1.5rem, 8vw, 3rem)',
+    fontSize: 'clamp(1.6rem, 8vw, 3.2rem)',
     marginBottom: '0.8rem',
     textShadow: '0 2px 10px rgba(0,0,0,0.8)',
     fontWeight: 'bold'
@@ -300,16 +300,14 @@ const styles = {
     textAlign: 'center'
   },
 
-  // Universal Grid (used for all sections)
+  // Universal Grid (mobile-first)
   grid: {
     display: 'grid',
-    gridTemplateColumns: '1fr', // Default: 1 column
+    gridTemplateColumns: '1fr',
     gap: '1.5rem',
     maxWidth: '1200px',
     margin: '0 auto'
   },
-
-  // Responsive Grid for larger screens
   '@media (min-width: 768px)': {
     grid: {
       ...styles.grid,
@@ -331,8 +329,8 @@ const styles = {
     border: '1px solid #e0f0ff',
     boxShadow: '0 4px 10px rgba(30, 144, 255, 0.08)',
     textAlign: 'center',
-    wordBreak: 'break-word', // Breaks long words
-    overflowWrap: 'break-word' // Ensures wrapping
+    wordBreak: 'break-word',
+    overflowWrap: 'break-word'
   },
   icon: {
     fontSize: '2.3rem',
@@ -403,7 +401,7 @@ const styles = {
     fontSize: '0.9rem'
   },
 
-  // News & Testimonial Cards
+  // News Card
   newsCard: {
     ...styles.card,
     backgroundColor: '#f0f8ff',
@@ -427,6 +425,7 @@ const styles = {
     fontSize: '0.95rem'
   },
 
+  // Testimonial Card
   testimonialCard: {
     ...styles.card,
     backgroundColor: 'white',
@@ -449,7 +448,7 @@ const styles = {
     fontWeight: '500'
   },
 
-  // CTA
+  // CTA Section
   ctaSection: {
     padding: '4rem 1rem',
     backgroundColor: '#f8f9ff',
