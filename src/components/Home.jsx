@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Home = () => {
-  // ✅ Fix: Rename "tony 1.jpg" → "tony1.jpg" (no spaces)
+  // ✅ Fix: Rename "tony 1.jpg" → "tony1.jpg"
   const backgrounds = [
     '/assets/images/tony3.jpg',
     '/assets/images/tony1.jpg', // Must be renamed!
@@ -307,7 +307,8 @@ const styles = {
     gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
     gap: '1.5rem',
     maxWidth: '1200px',
-    margin: '0 auto'
+    margin: '0 auto',
+    overflow: 'hidden'
   },
   featureCard: {
     padding: '1.6rem',
@@ -316,7 +317,8 @@ const styles = {
     textAlign: 'center',
     border: '1px solid #e0f0ff',
     boxShadow: '0 4px 10px rgba(30, 144, 255, 0.08)',
-    transition: 'transform 0.3s ease'
+    transition: 'transform 0.3s ease',
+    wordBreak: 'break-word'
   },
   featureIcon: {
     fontSize: '2.3rem',
@@ -330,7 +332,8 @@ const styles = {
   },
   featureDesc: {
     color: '#444',
-    lineHeight: '1.6'
+    lineHeight: '1.6',
+    fontSize: '0.95rem'
   },
 
   // Programs Grid
@@ -339,14 +342,16 @@ const styles = {
     gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
     gap: '1.5rem',
     maxWidth: '1200px',
-    margin: '0 auto'
+    margin: '0 auto',
+    overflow: 'hidden'
   },
   programCard: {
     padding: '1.6rem',
     borderRadius: '10px',
     backgroundColor: '#f8f9ff',
     border: '1px solid #cce5ff',
-    transition: 'all 0.3s ease'
+    transition: 'all 0.3s ease',
+    wordBreak: 'break-word'
   },
   programTitle: {
     fontSize: '1.3rem',
@@ -355,7 +360,8 @@ const styles = {
   },
   programDesc: {
     color: '#444',
-    lineHeight: '1.6'
+    lineHeight: '1.6',
+    fontSize: '0.95rem'
   },
 
   // Stats Section
@@ -363,7 +369,8 @@ const styles = {
     padding: '3.5rem 1.5rem',
     backgroundColor: '#1E90FF',
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    overflow: 'hidden'
   },
   statsContainer: {
     display: 'grid',
@@ -383,7 +390,8 @@ const styles = {
   statLabel: {
     color: 'rgba(255,255,255,0.95)',
     marginTop: '0.4rem',
-    fontWeight: '500'
+    fontWeight: '500',
+    fontSize: '0.9rem'
   },
 
   // News Grid
@@ -392,14 +400,16 @@ const styles = {
     gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
     gap: '1.5rem',
     maxWidth: '1200px',
-    margin: '0 auto'
+    margin: '0 auto',
+    overflow: 'hidden'
   },
   newsCard: {
     padding: '1.5rem',
     borderRadius: '10px',
     border: '1px solid #cce5ff',
     backgroundColor: '#f0f8ff',
-    transition: 'all 0.3s ease'
+    transition: 'all 0.3s ease',
+    wordBreak: 'break-word'
   },
   newsDate: {
     display: 'block',
@@ -415,7 +425,8 @@ const styles = {
   },
   newsDesc: {
     color: '#444',
-    lineHeight: '1.6'
+    lineHeight: '1.6',
+    fontSize: '0.95rem'
   },
 
   // Testimonials Grid
@@ -424,7 +435,8 @@ const styles = {
     gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
     gap: '1.5rem',
     maxWidth: '1200px',
-    margin: '0 auto'
+    margin: '0 auto',
+    overflow: 'hidden'
   },
   testimonialCard: {
     padding: '1.5rem',
@@ -432,12 +444,14 @@ const styles = {
     backgroundColor: 'white',
     border: '1px solid #cce5ff',
     fontStyle: 'italic',
-    boxShadow: '0 4px 8px rgba(30, 144, 255, 0.08)'
+    boxShadow: '0 4px 8px rgba(30, 144, 255, 0.08)',
+    wordBreak: 'break-word'
   },
   testimonialQuote: {
     color: '#333',
     lineHeight: '1.7',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
+    fontSize: '0.95rem'
   },
   testimonialFooter: {
     textAlign: 'right'
@@ -467,7 +481,8 @@ const styles = {
   ctaText: {
     fontSize: '1.1rem',
     color: '#555',
-    marginBottom: '1.5rem'
+    marginBottom: '1.5rem',
+    lineHeight: '1.6'
   },
   ctaButton: {
     padding: '14px 36px',
